@@ -1,0 +1,6 @@
+parsers:
+    - name:   log_parser
+      format: regex
+      regex:  '^(?<time>[^ ]+ [^ ]+) (?<level>[^ ]+) \[(?<service>[^\]]+)\] (?<message>.*)$'
+      time_key: time
+      time_format: "%Y-%m-%d %H:%M:%S"
