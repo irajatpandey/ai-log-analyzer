@@ -1,0 +1,23 @@
+10.244.0.1 - - [27/Jan/2026:14:00:01 +0000] "GET /healthz HTTP/1.1" 200 2 "GoogleHC/1.0"
+{"level": "info", "timestamp": "2026-01-27T14:00:05.123Z", "service": "payment-service", "msg": "Processing transaction 99812"}
+192.168.22.10 - - [27/Jan/2026:14:01:15 +0000] "POST /api/v1/checkout HTTP/1.1" 500 142 "Mozilla/5.0"
+[2026-01-27 14:01:15,432] ERROR in app: Exception on /api/v1/checkout [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/app/services/payment.py", line 45, in process_payment
+    secret = aws_secrets.get_secret("prod/stripe_key")
+  File "/app/utils/secrets.py", line 12, in get_secret
+    raise ClientError(error_response, operation_name)
+botocore.exceptions.ClientError: An error occurred (UnrecognizedClientException) when calling the GetSecretValue operation: The security token included in the request is invalid.
+2026/01/27 14:02:10 [error] 451#451: *1230 upstream SSL certificate does not match "payment.internal.svc", serial: 04:92:..., upstream: "https://10.0.1.5:443/process"
+10.244.0.55 - - [27/Jan/2026:14:03:00 +0000] "GET /static/main.css HTTP/1.1" 304 0 "Chrome/90.0"
+2026-01-27 14:05:22 UTC [821] FATAL:  password authentication failed for user "postgres_app"
+2026-01-27 14:05:22 UTC [821] DETAIL:  Password does not match for user "postgres_app". Connection matched pg_hba.conf line 95: "host all all 0.0.0.0/0 md5"
+{"level": "error", "timestamp": "2026-01-27T14:05:23.001Z", "service": "user-service", "msg": "Database connection refused", "error_code": "DB_AUTH_FAIL"}
+192.168.22.10 - - [27/Jan/2026:14:05:25 +0000] "GET /user/profile HTTP/1.1" 503 52 "Mozilla/5.0"
+[2026-01-27 14:08:00,112] CRITICAL:root:System running out of memory. Triggering GC.
+2026/01/27 14:10:45 [crit] 451#451: *1255 SSL_do_handshake() failed (SSL: error:14094412:SSL routines:ssl3_read_bytes:sslv3 alert bad certificate:SSL alert number 42) while SSL handshaking
+10.244.1.2 - - [27/Jan/2026:14:11:00 +0000] "PUT /api/v1/update HTTP/1.1" 401 24 "Python/3.9"

@@ -1,0 +1,10 @@
+services:
+  log-generator:
+    image: python:3.9-slim
+    container_name: chaos-generator
+    volumes:
+      - ./chaos_logs.py:/app.py      # Aapki script
+      - ./logs:/home/logs            # Jahan logs likhe jayenge
+    command: python /app.py          # Script ko run karne ki command
+    restart: always
+

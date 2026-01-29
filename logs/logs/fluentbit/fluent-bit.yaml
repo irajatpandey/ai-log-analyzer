@@ -1,0 +1,17 @@
+service:
+    flush:        1
+    log_level:    info
+    parsers_file: parsers.yaml
+
+pipeline:
+    inputs:
+        - name:   tail
+          path:   /home/logs/app.log
+          tag:    app.logs
+          parser: log_parser
+
+    outputs:
+        - name:        kafka
+          match:       app.logs
+          brokers:     kafka:9092
+          topics:      k8s-logs
