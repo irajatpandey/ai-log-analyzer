@@ -1,43 +1,43 @@
-# 🚀 AIOps Log Sentinel
+# 🛡️ AIOps Log Sentinel
 
-### *Enterprise-Grade Observability Pipeline with Resilience & AI-Readiness*
+> **An Intelligent, Event-Driven Log Monitoring System powered by RAG (Retrieval-Augmented Generation) and Google Gemini AI.**
 
-**AIOps Log Sentinel** is a high-performance log processing pipeline designed to handle massive log volumes from distributed microservices. It ensures **zero data loss** during infrastructure failures (like Kafka downtime or Node scale-downs) by implementing a robust Disk Buffering strategy.
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
+![AI](https://img.shields.io/badge/AI-Google%20Gemini-orange)
+![Database](https://img.shields.io/badge/Vector%20DB-ChromaDB-green)
+![DevOps](https://img.shields.io/badge/DevOps-Self--Healing-purple)
 
-[Image of Log Pipeline: App Pods with Fluent Bit DaemonSet -> PVC Buffer -> Kafka -> Python AI Consumer]
+## 📖 Overview
 
----
+**AIOps Log Sentinel** is a next-generation monitoring tool designed to reduce Mean Time To Resolution (MTTR). Instead of just alerting you about an error, it **diagnoses** it and provides a **fix** in real-time.
 
-## 🏗 System Architecture
+It uses a **Hybrid RAG Architecture**:
+1.  **Layer 1 (Speed):** Instantly searches a local **Vector Database (ChromaDB)** for known error patterns and historical fixes.
+2.  **Layer 2 (Intelligence):** If the error is new, it consults **Google Gemini 1.5 Flash (AI)** to analyze the log and generate a DevOps-grade solution.
 
-The project follows a "Store-and-Forward" architecture to balance performance and reliability:
+## 🚀 Key Features
 
-1. **Log Ingestion:** Fluent Bit tails logs from multiple sources (Java, Python, React).
-2. **Reliable Buffering:** Implements **Filesystem Buffering** using PVC/EBS. Chunks are committed to disk before network transmission.
-3. **Event Streaming:** Apache Kafka acts as the backbone, utilizing **Key-based Partitioning** to maintain strict log ordering per service.
-4. **Intelligent Processing:** A Flask-based Python worker consumes streams, applies **Regex-based parsing**, and prepares data for AIOps analysis.
-
----
-
-## 🛠 Tech Stack
-
-| Component | Technology | Role |
-| :--- | :--- | :--- |
-| **Shipper** | Fluent Bit | Log collection & Disk Buffering |
-| **Stream** | Apache Kafka | Real-time event streaming |
-| **Backend** | Python (Flask) | Log Parsing, Regex Engine & API |
-| **Storage** | PVC / Local Disk | Persistence Layer (The "Safe Box") |
-| **Container** | Docker Compose | Local Orchestration |
+* **⚡ Real-Time Monitoring:** Watches log streams live using a lightweight file watcher.
+* **🧠 Vector Search (RAG):** Uses Semantic Search (Sentence Transformers) to find similar past incidents with >90% accuracy.
+* **🤖 AI Fallback:** Automatically queries Google Gemini API for unknown/novel errors.
+* **📉 Rate Limit Protection:** Smart throttling ensures you never hit API quota limits.
+* **🔥 Chaos Engineering:** Includes a `chaos_logs.py` module to simulate real-world DevOps disasters (DB timeouts, SSL expiry, OOM kills) for testing.
 
 ---
 
-## 📂 Project Structure
+## 🛠️ Project Structure
 
-- **app/**: Main application package.
-  - **processor/**: Contains the Regex Engine for log structuring.
-  - **services/**: Background threads for Kafka consumption.
-  - **routes.py**: Flask API endpoints for status and alerts.
-- **config/**: Infrastructure configurations (Fluent Bit & Environment).
-- **logs/**: Mock application logs used for pipeline testing.
-- **buffer/**: The "Safe Box" where Fluent Bit stores data chunks (EBS Simulation).
-- **run.py**: The entry point to start the Flask sentinel.
+```bash
+project/
+├── data/
+│   └── vector_db/       # ChromaDB persistent storage
+├── logs/
+│   ├── app.log          # The active log file being watched
+│   └── chaos_logs.py    # Script to generate fake error logs
+├── scripts/
+│   ├── live_watcher.py  # Main Sentinel Engine (The "Brain")
+│   ├── vector_store.py  # Initializes/Refreshes the Vector DB
+│   └── get_solution.py  # Handles AI API connectivity (Google Gemini)
+├── .env                 # API Keys (Not committed)
+├── docker-compose.yml   # Container orchestration
+└── requirements.txt     # Python dependencies
