@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Service 1: Log Generator (Chaos)
+  log-generator:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    command: python logs/chaos_logs.py
+    volumes:
+      - ./logs:/app/logs  # Shared Volume for Logs
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # Service 2: AIOps Sentinel (Watcher)
+  sentinel:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    command: python scripts/live_watcher.py
+    volumes:
+      - ./logs:/app/logs  # Read logs from generator
+      - ./data:/app/data  # Persist Vector DB
+      - ./scripts:/app/scripts
+      - ./.env:/app/.env
+    depends_on:
+      - log-generator
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # Service 3: Vector DB Loader (Optional - Run manually or on startup)
+  db-loader:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    command: python scripts/vector_store.py
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./scripts:/app/scripts
