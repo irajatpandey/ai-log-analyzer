@@ -1,0 +1,1 @@
+cho "2026-02-04 20:00:00 ERROR [gateway] password  expired" >> ../logs/app.log
